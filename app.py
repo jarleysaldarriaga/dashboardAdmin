@@ -124,6 +124,17 @@ def accounts():
         
         mysql.connection.commit()
         query.close()
+        
+    if request.method == "GET":
+        id = request.args.get("id")    
+        
+        query = mysql.connection.cursor()
+        query.execute("select * from users where id = %s", (id,))
+        
+        usuarioEdit = query.fetchone()
+        query.close()
+        #print(usuarioEdit)
+    
     
     if "username" in session:
         query = mysql.connection.cursor()

@@ -1,20 +1,22 @@
 {%extends "layoutAdmin.html"%}
 {%block content%}
-<div class="content"><div class="card card-default">
+<div class="content users-table">
+    <div class="card card-default ">
     <div class="card-header align-items-center px-3 px-md-5">
       <h2>Usuarios</h2>
 
       <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-add-contact"> Nuevo Usuario
       </button>
     </div>
-    <div class="card-body">
+    <div class="card-body ">
         <table id="usersTable" class="table table-hover " >
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>NOMBRE</th>
                     <th>USUARIO</th>
-                    <th>ACCIÓN</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,7 +25,8 @@
                         <td class="text-dark">{{usuario[0]}}</td>
                         <td class="text-dark">{{usuario[1]}}</td>
                         <td class="text-dark">{{usuario[2]}}</td>
-                        <td class="text-dark"><a href="/home/editUser/{{usuario[2]}}" class="badge badge-primary"><i class="mdi mdi-account-edit"></i></a></td>
+                        <td class="text-dark"><button class="btn-datos badge badge-primary" data-id="{{usuario[0]}}" data-name="{{usuario[1]}}" data-user="{{usuario[2]}}" data-email="{{usuario[4]}}" data-phone="{{usuario[5]}}" data-role="{{usuario[6]}}" data-area="{{usuario[7]}}"><i class="mdi mdi-account-edit"></i></button></td>
+                        <td><button class="btn-eliminar-user badge badge-danger" data-id="{{usuario[0]}}"><i class="mdi mdi-delete"></i></button></td>
                     </tr>
                 {%endfor%}
             </tbody>
@@ -68,4 +71,69 @@
         </div>
     </div>
 </div>
+
+<div class="modal " id="modal-edit-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-header text-dark">
+                    Editar Usuario
+                </div>
+                <div class="card-body">
+                    <p>a continuación se mostraran los datos del usuario a editar, al finalizar presione guardar, si no desea hacerlo presione Cancelar</p>
+                    <div hidden>
+                        <label for="">id</label>
+                        <input id="editId" type="text" name="id" value="">
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="">Nombre:</label>
+                            <input id="editName" class="form-control" name="name" type="text" >
+                            
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        
+                        <div class="col-md-6">
+                            <label for="">Usuario:</label>
+                            <input id="editUser" type="text" class="form-control" name="username" >
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Correo:</label>
+                            <input id="editEmail" type="email" class="form-control" name="email" >
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label for="">Telefono:</label>
+                            <input id="editPhone" type="text" class="form-control" name="phone" ">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Rol:</label>
+                            <select name="role" id="editRole" class="select form-control">
+                                <option value="USUARIO">Usuario</option>
+                                <option value="ADMINISTRADOR">Administrador</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Area:</label>
+                            <input id="editArea" type="text" name="area" class="form-control" ">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <button id="update-account-user"  class="form-control btn btn-sm btn-primary">ACTUALIZAR USUARIO</button>
+                        </div>
+                        <div class="col-md-12">
+                            <button id="modal-editUser-close" class="form-control btn btn-sm btn-info" data-dismiss="modal">CANCELAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}
