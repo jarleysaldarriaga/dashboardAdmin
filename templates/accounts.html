@@ -1,0 +1,71 @@
+{%extends "layoutAdmin.html"%}
+{%block content%}
+<div class="content"><div class="card card-default">
+    <div class="card-header align-items-center px-3 px-md-5">
+      <h2>Usuarios</h2>
+
+      <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-add-contact"> Nuevo Usuario
+      </button>
+    </div>
+    <div class="card-body">
+        <table id="usersTable" class="table table-hover " >
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th>USUARIO</th>
+                    <th>ACCIÓN</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in Usuarios %}
+                    <tr>
+                        <td class="text-dark">{{usuario[0]}}</td>
+                        <td class="text-dark">{{usuario[1]}}</td>
+                        <td class="text-dark">{{usuario[2]}}</td>
+                        <td class="text-dark"><a href="/home/editUser/{{usuario[2]}}" class="badge badge-primary"><i class="mdi mdi-account-edit"></i></a></td>
+                    </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-add-contact" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <form action="{{url_for('accounts')}}" method="post">
+
+                <div class="modal-header px-4">
+                    <h4>CREAR NUEVO USUARIO</h4>
+                </div>
+                <div class="modal-body px-4">
+                    <div class="form-group row ">
+                        <div class="col-md-12">
+                            <label for="">Nombre Completo:</label>
+                            <input type="text" class="form-control" name="name">
+    
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <div class="col-md-6">
+                            <label for="">Usuario:</label>
+                            <input type="text" class="form-control" name="username">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Contraseña:</label>
+                            <input type="password" name="password" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer px-4">
+                    <button type="button" class="btn btn-smoke btn-pill" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-pill">Agregar Usuario</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
