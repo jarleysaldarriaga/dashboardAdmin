@@ -56,4 +56,29 @@ $(document).ready(function(){
             }
         })
     })
+
+    $("#create-new-task").click(function(){
+        var title =  $("#titleNewTask").val()
+        var description=  $("#descriptionNewTask").val()
+        var date = $("#dateNewTask").val()
+        var user_asigned = $("#userNewTask").val()
+
+        if(title == "" || description == ""||date ==""||user_asigned ==""){
+            console.log("vacios")
+        }else{
+            $.ajax({
+                url: '/home/tasks',
+                type: 'POST',
+                data:{title:title,description:description,date:date,user_asigned:user_asigned},
+    
+                success: function(res){
+                    
+                    location.reload();
+                }, 
+                error: function(error){
+                    console.log(error)
+                }
+            })
+        }
+    });
 });

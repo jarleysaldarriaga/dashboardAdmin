@@ -1,0 +1,84 @@
+{%extends "layoutAdmin.html" %}
+{%block content%}
+<div class="content users-table">
+    <div class="card card-default ">
+    <div class="card-header align-items-center px-3 px-md-5">
+      <h2>Mis Tareas</h2>
+
+      <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-create-task"> Nueva Tarea
+      </button>
+    </div>
+    <div class="card-body ">
+        <table id="taskTable" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>TITULO</th>
+                    <th>ESTADO</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for taskList in taskList %}
+                    <tr>
+                        <td>{{taskList[0]}}</td>
+                        <td>{{taskList[1]}}</td>
+                        <td>{{taskList[4]}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal " id="modal-create-task" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-header text-dark">
+                    NUEVA TAREA
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <label for="">TITULO DE LA TAREA:</label>
+                            <input id="titleNewTask" type="text" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <label for="">DESCRIPCIÓN DE LA TAREA:</label>
+                            <textarea name="" id="descriptionNewTask" cols="30" rows="5" class="form-control" required>
+                                
+
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label for="">FECHA FINALIZACIÓN TAREA:</label>
+                            <input id="dateNewTask" type="date" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">ASIGNAR TAREA A:</label>
+                            <select name="" id="userNewTask" class="form-control" required>
+                                {%for usersArea in usersArea%}
+                                    <option value="{{usersArea[0]}}">{{usersArea[1]}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id="create-new-task" class="btn btn-primary form-control">AGREGAR TAREA</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{%endblock%}

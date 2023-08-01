@@ -1,5 +1,5 @@
 #import library flask to use
-from flask import Flask, render_template, request, make_response,session,redirect,url_for
+from flask import Flask, render_template, request, make_response,session,redirect,url_for,flash
 #render template renderiza las vistas correspondientes o asignadas
 #request permite acceder a las funciones de envio de datos por metodos get y post
 #make response
@@ -42,49 +42,37 @@ def users():
     query.close()
     
     return render_template("usuarios.html",usuarios=usuarios)
+#########################################################################################
+request = request
+session = session
+redirect = redirect
+url_for = url_for
+
+from routes import login,signup as register,accounts as account, listAccounts, updateUser as userUpdate, createTask,userForArea,listTask
+
 
 #########################################################################################
 #esta ruta es el index y el login al mismo tiempo para obtener los datos
 @app.route("/",  methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        
-        query = mysql.connection.cursor()
-        query.execute("SELECT name,username, password From users where username = %s and password = %s",(username,password))
-        
-        user = query.fetchone()
-        query.close()
-
-        if user:
-            session["name"] = user[0]
-            session["username"] = user[1]
-            return redirect(url_for("home"))
-        return redirect(url_for("index"))
+        login.login(request,mysql,session,redirect,url_for)
     if "username" in session:
         return redirect(url_for("home"))
     
-    #title = "Index"
-    #lista = ["camilo", "tatiana", "estiverd"]
     return render_template("index.html")
-    #para pasar variables y valores se envia como argumento atravez del render como variable
     
 #esta ruta se encarga de crear los usuario
 ##################################################################################
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        name = request.form["name"]
-        username = request.form["username"]
-        password = request.form["password"]
-        
-        query = mysql.connection.cursor()
-        query.execute("INSERT INTO users(name,username,password) values(%s,%s,%s)",(name,username,password))
-        
-        mysql.connection.commit()
-        query.close()
-        
+        resulSignup = register.signup(request,mysql)
+        if resulSignup == 1:
+            flash("Resgistro hecho exitosamente")
+        else:
+            flash("No se puedo registrar Intentelo nuevamente")
+            
         return redirect(url_for("index"))
         
     return render_template("signup.html")
@@ -94,19 +82,9 @@ def home():
     #valida que exista la session
     if "username" in session:
         return render_template("home.html")
-        #return "you are %s" % escape(session["username"])
     #en caso de no haber session redirecciona al login
     return redirect(url_for("index"))
     #return render_template("home.html")
-
-##################################################################################
-@app.route("/search/user")
-def search():
-    nickname = request.args.get("nickname")
-    user = Users.query.filter_by(username=nickname).first()
-    if user:
-        return "usuario: "+ user.username + "contraseña: " +user.password
-    return "property don't know"
 
 #####################################################################################
 #asigna el valor a la cookie 
@@ -114,80 +92,33 @@ def search():
 def accounts():
     #resp = make_response(render_template("home.html"))
     #resp.set_cookie("username", "stiv99")
-    if request.method == "POST":
-        name = request.form["name"]
-        username = request.form["username"]
-        password = request.form["password"]
-        
-        query = mysql.connection.cursor()
-        query.execute("INSERT INTO users(name,username,password) values(%s,%s,%s)",(name,username,password))
-        
-        mysql.connection.commit()
-        query.close()
-        
-    if request.method == "GET":
-        id = request.args.get("id")    
-        
-        query = mysql.connection.cursor()
-        query.execute("select * from users where id = %s", (id,))
-        
-        usuarioEdit = query.fetchone()
-        query.close()
-        #print(usuarioEdit)
-    
-    
+    account.accounts(request,mysql)
     if "username" in session:
-        query = mysql.connection.cursor()
-        query.execute("SELECT * From users")
-        
-        Usuarios = query.fetchall()
-        query.close()
+        Usuarios = listAccounts.listAccounts(mysql)
         return render_template("accounts.html",Usuarios=Usuarios)
     return redirect(url_for("index"))
     
 ####################################################################################
-@app.route('/home/editUser/<string:username>',methods=["GET","POST"])
-def editUser(username):
-    
-    query = mysql.connection.cursor()
-    query.execute("SELECT * From users where username = %s ",[username])
-    
-    usuario=query.fetchone()
-    query.close()
-    
-    return render_template("editUser.html",usuario=usuario)
 
 @app.route('/home/updateUser', methods=["GET", "POST"])
 def updateUser():
     if request.method == "POST":
-        id = request.form["id"]
-        name = request.form["name"]
-        username = request.form["username"]
-        email = request.form["email"]
-        area = request.form["area"]
-        role = request.form["role"]
-        phone = request.form["phone"]
-        
-        query = mysql.connection.cursor()
-        query.execute("UPDATE users SET  name = %s, username= %s,email=%s,phone=%s,role=%s,area=%s  where id = %s", (name,username,email,phone,role,area,id))
-        
-        mysql.connection.commit()
-        query.close()
-        
+        userUpdate.updateUser(request,mysql)
         return redirect(url_for("accounts"))
 
-
-    
 ####################################################################################
-#recupera el valor de la cookie ya asignada anteriormente
-@app.route('/cookie/read')
-def read_cookie():
-    username = request.cookies.get("username", None)
-    
-    if username == None:
-        return "the cookie doesn't exit."
-    
-    return username
+@app.route('/home/tasks', methods=["GET","POST"])
+def tasks():
+    UserId = session["id"]
+    areaUser = session["area"]
+    usersArea = userForArea.userForArea(mysql,areaUser)
+    taskList = listTask.listTask(mysql,UserId)
+    print(usersArea)
+    if request.method == "POST":
+        createTask.createTask(request,mysql)
+        return redirect(url_for("tasks"))
+    return render_template("task.html", usersArea=usersArea,taskList=taskList)
+
 ####################################################################################
 @app.route('/logout')
 def logout():
