@@ -48,7 +48,7 @@ session = session
 redirect = redirect
 url_for = url_for
 
-from routes import login,signup as register,accounts as account, listAccounts, updateUser as userUpdate, createTask,userForArea,listTask
+from routes import login,signup as register,accounts as account, listAccounts, updateUser as userUpdate, createTask,userForArea,listTask,listCases
 
 
 #########################################################################################
@@ -118,6 +118,12 @@ def tasks():
         createTask.createTask(request,mysql)
         return redirect(url_for("tasks"))
     return render_template("task.html", usersArea=usersArea,taskList=taskList)
+
+#############################TODO CASOS #############################################
+@app.route('/home/cases')
+def manage_cases():
+    Casos = listCases.asignedCase(mysql)
+    return render_template("cases.html", Casos= Casos)
 
 ####################################################################################
 @app.route('/logout')

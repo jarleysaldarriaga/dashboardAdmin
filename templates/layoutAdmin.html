@@ -115,9 +115,9 @@
                 
                   <li
                    >
-                    <a class="sidenav-item-link" href="chat.html">
+                    <a class="sidenav-item-link" href="{{ url_for("manage_cases" ) }}">
                       <i class="mdi mdi-wechat"></i>
-                      <span class="nav-text">Chat</span>
+                      <span class="nav-text">Administrar Casos</span>
                     </a>
                   </li>
                 
@@ -128,7 +128,7 @@
                   <li>
                     <a class="sidenav-item-link" href="contacts.html">
                       <i class="mdi mdi-phone"></i>
-                      <span class="nav-text">Contacts</span>
+                      <span class="nav-text">Mis Casos</span>
                     </a>
                   </li>
                         
@@ -588,6 +588,7 @@
         $(document).ready( function () {
             $('#usersTable').DataTable();
             $('#taskTable').DataTable();
+            $('#table-cases').DataTable();
         } );
     </script>
   </body>

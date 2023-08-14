@@ -1,0 +1,82 @@
+{%extends "layoutAdmin.html" %}
+{%block content%}
+<div class="content users-table">
+    <div class="card card-default ">
+        <div class="card-header align-items-center px-3 px-md-5">
+            <h2>Administrar Casos</h2>
+
+            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-create-ticket">Nuevo Ticket
+            </button>
+        </div>
+        <div class="card-body ">
+            <div class="table-responsive">
+                <table id="table-cases" class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>SOLICITANTE</th>
+                            <th>AREA SOLICITUD</th>
+                            <th>FECHA SOLICITUD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for caso in Casos%}
+                            <tr class="text-dark">
+                                <td>{{caso[0]}}</td>
+                                <td>{{caso[1]}}</td>
+                                <td>{{caso[5]}}</td>
+                                <td>{{caso[7]}}</td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal " id="modal-create-ticket" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3>CREAR NUEVO TICKET</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label for="">Solicitante:</label>
+                            <input type="text" id="newCaseUser" class="form-control" value="{{session["name"]}}" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Tipo de Solicitud:</label>
+                            <input type="text" id="newCaseType" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <label for="">Descripción:</label>
+                            <textarea name="" id="newCaseDescription" cols="30" rows="5" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <label for="">Area Requerimiento:</label>
+                            <input type="text" id="newCaseArea" class="form-control">
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" id="create-new-case" class="btn btn-primary form-control btn-sm">CREAR CASO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
