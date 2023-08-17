@@ -1,0 +1,126 @@
+{%extends "layoutAdmin.html"%}
+{%block content%}
+<div class="content users-table">
+    <div class="card card-default ">
+        <div class="card-header align-items-center px-3 px-md-5">
+            <h2>ADMINISTRAR TIPOS DE DAÑO</h2>
+
+            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-create-damage">Nuevo tipo de Daño
+            </button>
+        </div>
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-md-12 alert alert-info">
+                    <h5>TIPOS DE DAÑO TECNOLOGÍA</h5>   
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table" id="table-damages">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>TIPO DAÑO</th>
+                            <th>AREA DAÑO</th>
+                            <th>EDICIÓN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for damage in Damages %}
+                            <tr>
+                                <td>{{damage[0]}}</td>
+                                <td>{{damage[1]}}</td>
+                                <td>{{damage[2]}}</td>
+                                <td class="text-dark"><button class="btn-damages badge badge-primary" data-id="{{damage[0]}}"><i class="mdi mdi-eye"></i></button></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal " id="modal-create-damage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3>CREAR NUEVO TIPO DE DAÑO</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-12 ">
+                            <p class="" id="message-form" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="">TIPO DE DAÑO:</label>
+                            <input type="text" id="new-damage-type" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">AREA ASOCIADA AL DAÑO</label>
+                            <select name="" id="new-area-damage" class="form-control">
+                                <option value="">SELECCIONE</option>
+                                <option value="TECNOLOGÍA">TECNOLOGÍA</option>
+                                <option value="MANTENIMIENTO">MANTENIMIENTO</option>
+                                <option value="MICROCINCO">MICROCINCO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id="add-new-damage" class="btn btn-info btn-sm form-control">AGREGAR TIPO DE DAÑO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal " id="modal-edit-damage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-header text-dark">
+                    <h4>EDITAR TIPO DAÑO</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-12 ">
+                            <p class="" id="message-form-damages" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div class="row" hidden>
+                        <div class="col-md-12">
+                            <label for="">id</label>
+                            <input type="text" value="" id="edit-damage-id">
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="">TIPO DE DAÑO:</label>
+                            <input type="text" id="edit-damage-type" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">AREA ASOCIADA AL DAÑO</label>
+                            <select name="" id="edit-area-damage" class="form-control">
+                                <option value="TECNOLOGÍA">TECNOLOGÍA</option>
+                                <option value="MANTENIMIENTO">MANTENIMIENTO</option>
+                                <option value="MICROCINCO">MICROCINCO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"><button class="form-control btn btn-success" id="check-update-damage"><i class="mdi mdi-check"></i></button></div>
+                        <div class="col-md-4"><button class="form-control btn btn-danger" id="check-delete-damage"><i class="mdi mdi-delete"></i></button></div>
+                        <div class="col-md-4"><button class="form-control btn btn-secondary" id="cancel-close-damage"><i class="mdi mdi-window-close"></i></button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

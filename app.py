@@ -1,5 +1,5 @@
 #import library flask to use
-from flask import Flask, render_template, request, make_response,session,redirect,url_for,flash
+from flask import Flask, render_template, request, make_response,session,redirect,url_for,flash,jsonify
 #render template renderiza las vistas correspondientes o asignadas
 #request permite acceder a las funciones de envio de datos por metodos get y post
 #make response
@@ -48,7 +48,7 @@ session = session
 redirect = redirect
 url_for = url_for
 
-from routes import login,signup as register,accounts as account, listAccounts, updateUser as userUpdate, createTask,userForArea,listTask,listCases
+from routes import login,signup as register,accounts as account, listAccounts, updateUser as userUpdate, createTask,userForArea,listTask,listCases,createDamage,listDamages, createArea,listAreas, updateDamages, deleteDamage as deleteD
 
 
 #########################################################################################
@@ -125,6 +125,50 @@ def manage_cases():
     Casos = listCases.asignedCase(mysql)
     return render_template("cases.html", Casos= Casos)
 
+
+
+##########################TODO TYPO DAÑOS##############################
+
+@app.route('/home/cases/manage_damages', methods=["GET"])
+def manage_damages():
+    damages = listDamages.listDamages(mysql);
+    return render_template("typesDamage.html", Damages = damages)
+
+@app.route('/home/cases/addNewDamage', methods=["POST"])
+def addNewDamage():
+    addDamage = createDamage.createDamage(request, mysql);
+    if addDamage == "success":
+        return make_response("200");
+    elif addDamage == None:
+        return make_response("404");
+
+@app.route('/home/damages/editDamage', methods=["POST"])
+def editDamage():
+    if request.method == "POST":
+        Damage = updateDamages.updateDamages(request,mysql)
+        return make_response(Damage)
+
+@app.route('/home/damages/deleteDamage/<id>', methods=["DELETE"])
+def deleteDamage(id):
+    Damage = deleteD.deleteDamage(request, mysql, id)
+    return make_response(Damage)
+
+####################################TODO AREAS DE SERVICIO###################
+@app.route('/home/area/manage_areas', methods=["GET"])
+def manage_areas():
+    Areas = listAreas.listAreas(mysql)
+    return render_template("areas.html", Areas = Areas)
+
+@app.route('/home/area/addNewArea', methods=["POST"])
+def addNewArea():
+    addArea = createArea.createArea(request, mysql);
+    if addArea == "success":
+        return make_response("200");
+    elif addArea == None:
+        return make_response("404");
+
+        
+
 ####################################################################################
 @app.route('/logout')
 def logout():
@@ -133,6 +177,23 @@ def logout():
     return redirect(url_for("index"))
         
 ####################################################################################
+
+################TODO API#################################
+from api import damages
+
+@app.route('/api/v1/damages')
+def get_damages():
+    get_damages = damages.get_damages(mysql,jsonify);
+
+    return get_damages
+
+@app.route('/api/v1/damages/<id>')
+def get_damage(id):
+    get_id_damage = damages.get_damage(mysql, jsonify, id)
+    return get_id_damage
+
+
+    
 
 #main hace referencia al paquete de ejecucion principal
 if __name__ == "__main__":

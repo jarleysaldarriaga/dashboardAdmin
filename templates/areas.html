@@ -1,0 +1,65 @@
+{%extends "layoutAdmin.html"%}
+{%block content%}
+<div class="content users-table">
+    <div class="card card-default ">
+        <div class="card-header align-items-center px-3 px-md-5">
+            <h2>ADMINISTRAR AREAS DE SERVICIO</h2>
+
+            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-create-area">Nueva Area
+            </button>
+        </div>
+        <div class="card-body ">
+            <div class="table-responsive">
+                <table class="table" id="table-areas">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NOMBRE DE AREA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for area in Areas %}
+                            <tr>
+                                <td>{{area[0]}}</td>
+                                <td>{{area[1]}}</td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal " id="modal-create-area" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3>CREAR NUEVA AREA DE SERVICIO</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-md-12 ">
+                            <p class="" id="message-form" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <label for="">NUEVA AREA DE SERVICIO</label>
+                            <input type="text" id="new-area-service" class="form-control" placeholder="nueva area de servicio">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id="add-new-area" class="btn btn-info btn-sm form-control">AGREGAR NUEVA AREA</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

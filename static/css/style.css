@@ -2506,13 +2506,13 @@ fieldset:disabled a.btn {
 
 .btn-secondary {
   color: #ffffff;
-  background-color: #fd5190;
-  border-color: #fd5190;
+  background-color: #3f8ab5;
+  border-color: #1f71a1;
 }
 .btn-secondary:hover {
   color: #ffffff;
-  background-color: #fd2b78;
-  border-color: #fc1f70;
+  background-color: #3f8ab5;
+  border-color: #1f71a1;
 }
 .btn-secondary:focus, .btn-secondary.focus {
   color: #ffffff;
