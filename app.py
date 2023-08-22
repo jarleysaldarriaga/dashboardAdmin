@@ -8,6 +8,8 @@ from flask import Flask, render_template, request, make_response,session,redirec
 #redirect se encarga de moverse entre paginas
 #url_for devuelve el valor asociado al retorno del llamdo
 
+import os
+
 #importar libreria para cifrar contraseñas
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -48,7 +50,7 @@ session = session
 redirect = redirect
 url_for = url_for
 
-from routes import login,signup as register,accounts as account, listAccounts, updateUser as userUpdate, createTask,userForArea,listTask,listCases,createDamage,listDamages, createArea,listAreas, updateDamages, deleteDamage as deleteD
+from routes import login,signup as register,accounts as account, listAccounts, updateUser as userUpdate, createTask,userForArea,listTask,listCases,createDamage,listDamages, createArea,listAreas, updateDamages, deleteDamage as deleteD, updateArea, deleteArea as deleteA
 
 
 #########################################################################################
@@ -122,19 +124,21 @@ def tasks():
 #############################TODO CASOS #############################################
 @app.route('/home/cases')
 def manage_cases():
+    Areas = listAreas.listAreas(mysql)
+    Daños = listDamages.listDamages(mysql)
     Casos = listCases.asignedCase(mysql)
-    return render_template("cases.html", Casos= Casos)
+    return render_template("cases.html", Casos= Casos, Areas = Areas, Daños = Daños)
 
 
 
 ##########################TODO TYPO DAÑOS##############################
 
-@app.route('/home/cases/manage_damages', methods=["GET"])
+@app.route('/home/damages/manage_damages', methods=["GET"])
 def manage_damages():
     damages = listDamages.listDamages(mysql);
     return render_template("typesDamage.html", Damages = damages)
 
-@app.route('/home/cases/addNewDamage', methods=["POST"])
+@app.route('/home/damages/addNewDamage', methods=["POST"])
 def addNewDamage():
     addDamage = createDamage.createDamage(request, mysql);
     if addDamage == "success":
@@ -167,6 +171,23 @@ def addNewArea():
     elif addArea == None:
         return make_response("404");
 
+@app.route('/home/area/editArea', methods=["POST"])
+def editArea():
+    areaEdit = updateArea.updateArea(request, mysql);
+    if areaEdit == "success":
+        return make_response("200");
+    elif areaEdit == None:
+        return make_response("404");
+
+
+@app.route('/home/area/deleteArea', methods=["DELETE"])
+def deleteArea():
+    areaDelete = deleteA.deleteArea(request, mysql)
+    if areaDelete == "success":
+        return make_response("200");
+    elif areaDelete == None:
+        return make_response("404");
+
         
 
 ####################################################################################
@@ -179,7 +200,7 @@ def logout():
 ####################################################################################
 
 ################TODO API#################################
-from api import damages
+from api import damages,areas
 
 @app.route('/api/v1/damages')
 def get_damages():
@@ -191,6 +212,17 @@ def get_damages():
 def get_damage(id):
     get_id_damage = damages.get_damage(mysql, jsonify, id)
     return get_id_damage
+
+@app.route('/api/v1/damages/areaDamages/<areaD>')
+def get_areaDamage(areaD):
+    get_damagesArea = damages.get_areaDamage(mysql, jsonify,areaD)
+    return get_damagesArea
+
+##///////////////////////AREAS/////////////////////##
+@app.route('/api/v1/areas/<id>')
+def get_area(id):
+    get_id_area = areas.get_area(mysql, jsonify, id)
+    return get_id_area
 
 
     

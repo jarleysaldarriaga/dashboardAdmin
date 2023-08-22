@@ -52,8 +52,13 @@
                             <input type="text" id="newCaseUser" class="form-control" value="{{session["name"]}}" readonly>
                         </div>
                         <div class="col-md-6">
-                            <label for="">Tipo de Solicitud:</label>
-                            <input type="text" id="newCaseType" class="form-control">
+                            <label for="">Ticket para el area:</label>
+                            <Select class="form-control" id="new-case-areaAsigned">
+                                <option value="">Seleccione</option>
+                                <option value="TECNOLOGÍA">TECNOLOGÍA</option>
+                                <option value="MICROCINCO">MICROCINCO</option>
+                                <option value="MANTENIMIENTO">MANTENIMIENTO</option>
+                            </Select>
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -63,12 +68,25 @@
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <div class="col-md-12">
-                            <label for="">Area Requerimiento:</label>
-                            <input type="text" id="newCaseArea" class="form-control">
+                        <div class="col-md-6">
+                            <label for="">Area de Solicitud:</label>
+                            <select name="" id="" class="form-control">
+                                <option value="">Seleccione</option>
+                                {%for area in Areas %}
+                                    <option value="{{area[0]}}">{{area[1]}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Tipo de Solicitud:</label>
+                            <select name="" class="form-control" id="newCaseDamage">
+                                <option value="">Esperando area de asignación...</option>
+                                
+                            </select>
                         </div>
                         
                     </div>
+                    
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" id="create-new-case" class="btn btn-primary form-control btn-sm">CREAR CASO</button>

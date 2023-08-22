@@ -9,7 +9,7 @@ $(document).ready(()=>{
         }else{
             $.ajax({
                 type: "POST",
-                url: "/home/cases/addNewDamage",
+                url: "/home/damages/addNewDamage",
                 data: {typeDamage:typeDamage,areaDamage:areaDamage},
                 success: function(response) {
                     if (response == "200"){
@@ -19,7 +19,7 @@ $(document).ready(()=>{
                             location.reload();
                         },1000)
                     }else if(response == "404"){
-                        $("#message-form").attr("style", "color: green;")
+                        $("#message-form").attr("style", "color: red;")
                         $("#message-form").text("no se guardo verifique la informacion e intentelo de nuevo");
                     }
                 },
